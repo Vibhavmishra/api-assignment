@@ -8,7 +8,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+mongoose.set('useCreateIndex', true);
 
+mongoose.connect(config.db, { useNewUrlParser: true });
 
 app.get('/',(req,res)=>{	
 	res.json({message:'Hey I am listening'});
