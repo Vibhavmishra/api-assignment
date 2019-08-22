@@ -10,6 +10,7 @@ exports.add = function (req, res) {
     user.password = req.body.password;
     user.username = req.body.username;
     user.email = req.body.email;
+    user.phoneNo = req.body.phoneNo;
     
     user.save(function (err) {
         if (err) {
@@ -47,9 +48,33 @@ exports.getuser = function (req, res) {
                 username: user.username
                 }, config.secret, {expiresInMinutes: 1440});
                 console.log(user);
-                    var res_user = {name: user.name,email:user.email,username :user.username,dob:user.dob, isUserAdmin : user};
+                delete user.password;                    
                 return res.json({status: 200, user: user, token: token});
             }
         }
-});
+    });
+}
+
+exports.updateUser =  function (req, res) {
+
+    let user = req.body;
+    const userId = req.body._id;
+    const uniqueAttribute = ['username','password','_id'];
+
+    uniqueAttribute.forEach(e => delete user[e]);
+   
+    User.findOneAndUpdate({_id: userId}, user, {new: true},(err,user)=>{
+        if(err){
+            res.json({message: "Sorry, Please try again.", status: false});
+        }else{
+            if(user==null){
+                res.json({message: "Sorry, Invalid Data provided.", status: false});
+            }else{
+                  res.json(user);
+            }
+
+          
+        }
+    })
+
 }

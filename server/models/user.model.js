@@ -8,7 +8,12 @@ var UserSchema = new Schema({
     password: {type: String, required: true, select: false},
     email:String,
     dob:  { type: Date, default: null },
+    address : { type:String, default:null },
+    phoneNo : {type : String, default: null}
 });
+
+UserSchema.index({ username: 1 }, { unique: true });
+
 
 UserSchema.pre('save', function (next) {
     var user = this;

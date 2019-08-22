@@ -4,11 +4,14 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const config = require("./config");
 const app = express();
+var authInterceptor = require('./server/middleware/auth-interceptor')
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', true);
+mongoose.set('useNewUrlParser', true);
 
 mongoose.connect(config.db, { useNewUrlParser: true });
 
@@ -18,7 +21,13 @@ app.get('/',(req,res)=>{
 
 app.use(morgan('dev'));
 
+app.use('**/user/**', authInterceptor('protected'));
+app.use('**/person', authInterceptor('protected'));
+app.use('**/post', authInterceptor('protected'));
+
 require('./server/routes/user.route')(app, express);
+require('./server/routes/person.route')(app, express);
+require('./server/routes/post.route')(app, express);
 
 
 app.listen(config.port, function () {

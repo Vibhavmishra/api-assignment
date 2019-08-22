@@ -1,4 +1,4 @@
-var signup_controller = require('../controllers/user.controller');
+var post_controller = require('../controllers/post.controller');
 
 module.exports = function (app) {
 
@@ -9,7 +9,6 @@ module.exports = function (app) {
         next();
     })
 
-    app.post('/api/signup', signup_controller.add);
-    app.post('/api/signin', signup_controller.getuser);
-    app.post('/api/user/update', signup_controller.updateUser);
+    app.get('/api/post', post_controller.getPost);
+    app.post('/api/post', post_controller.addPost);
 }
