@@ -18,6 +18,9 @@ app.get('/',(req,res)=>{
 
 app.use(morgan('dev'));
 
+require('./server/routes/user.route')(app, express);
+
+
 app.listen(config.port, function () {
     console.log("Server is running on " + config.port);
 })
