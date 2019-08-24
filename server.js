@@ -22,7 +22,7 @@ app.get('/',(req,res)=>{
 app.use(morgan('dev'));
 
 app.use('**/user/**', authInterceptor('protected'));
-app.use('**/person', authInterceptor('protected'));
+app.use('**/person', authInterceptor('public'));
 app.use('**/post', authInterceptor('protected'));
 
 require('./server/routes/user.route')(app, express);

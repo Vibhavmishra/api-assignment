@@ -12,4 +12,5 @@ module.exports = function (app) {
     app.post('/api/signup', signup_controller.add);
     app.post('/api/signin', signup_controller.getuser);
     app.post('/api/user/update', signup_controller.updateUser);
+    app.get('/api/user/signout', signup_controller.logout);
 }

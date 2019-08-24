@@ -9,7 +9,8 @@ var UserSchema = new Schema({
     email:String,
     dob:  { type: Date, default: null },
     address : { type:String, default:null },
-    phoneNo : {type : String, default: null}
+    phoneNo : {type : String, default: null},
+    token : {type: String,default: null}
 });
 
 UserSchema.index({ username: 1 }, { unique: true });

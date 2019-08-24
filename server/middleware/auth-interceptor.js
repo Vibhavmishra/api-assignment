@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken');
 const config = require('../../config');
+var User = require('../models/user.model');
 
 module.exports = function (option) {
     switch (option) {
@@ -12,11 +13,28 @@ module.exports = function (option) {
                             return res.json({ success: false, message: 'Failed to authenticate token.' });
                         } else {
                             req.decoded = decoded;
-                            next();
                         }
                     });
+                    User.findOne({token: token}).select('username token').exec(function (err, user)
+                    {
+                        if (err){
+                            throw err;
+                            res.status(500).json({
+                                message: 'Please try after sometime'
+                            });
+                        }
+                        if (!user)
+                        {
+                              return res.status(401).json({message: "Not authenticate.", status: false});
+                        } else {
+                               next();
+                            }
+                            
+                        });
+                    
+
                 } else {
-                    return res.status(403).send({
+                    return res.status(400).send({
                         success: false,
                         message: 'No token provided.'
                     });
@@ -32,3 +50,4 @@ module.exports = function (option) {
             }
     }
 }
+
